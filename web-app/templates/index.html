@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Classifier</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+        /* Center alignment of the content */
+        background-color: #f4f4f4;
+        /* Light grey background */
+        margin: 0;
+        padding: 20px;
+      }
+
+      #video {
+        border: 5px solid #ddd;
+        /* Add border to video */
+        border-radius: 4px;
+        /* Round the corners */
+        margin-bottom: 20px;
+        /* Add some space below the video */
+      }
+
+      button {
+        background-color: #007bff;
+        /* Bootstrap primary button color */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+        /* A darker blue on hover */
+      }
+
+      #canvas {
+        display: none;
+        /* Hide the canvas element by default */
+      }
+
+      h1 {
+        color: #333;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>Mood Classifier</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script>
+      var video = document.getElementById('video');
+
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+          video.srcObject = stream;
+          video.play();
+        });
+      }
+
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var snap = document.getElementById("snap");
+
+      snap.addEventListener("click", function () {
+        context.drawImage(video, 0, 0, 640, 480);
+        canvas.toBlob(function (blob) {
+          var formData = new FormData();
+          formData.append('photo', blob);
+
+          fetch('/upload', { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+              // Process and display the results here
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }, 'image/jpeg');
+      });
+    </script>
+
+  </body>
+
+</html>
