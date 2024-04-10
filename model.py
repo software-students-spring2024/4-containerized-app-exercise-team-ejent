@@ -13,6 +13,8 @@ class MLModel:
         """
         self.model_path = model_path
         self.model = load_model(model_path)
+    def create_model(model_path='model_weights.weights.h5'):
+        return MLModel(model_path)
     
     def predict_from_path(self, img_path):
         """
