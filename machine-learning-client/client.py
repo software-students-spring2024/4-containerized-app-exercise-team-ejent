@@ -6,7 +6,8 @@ import cv2, pymongo, time
 
 def get_emotion(image):
     """
-    Method for detecting emotions in an image containing humans, using the fer library. Works with images containing multiple faces.
+    Method for detecting emotions in an image containing humans, 
+    using the fer library. Works with images containing multiple faces.
     """
     # edit to return just label
     try:
@@ -49,6 +50,6 @@ def connect_db():
     client.close()
 
 if __name__ == "__main__":
-    # Test the get_emotion method for now
+    # Test the get_emotion method for now, CV2 maybe not necessary
     im = cv2.imread('./test0.png')
     print(get_emotion(im))
