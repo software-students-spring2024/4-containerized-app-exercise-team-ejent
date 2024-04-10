@@ -1,25 +1,53 @@
 import os
 os.environ["IMAGEIO_FFMPEG_EXE"] = "/usr/bin/ffmpeg"
 from fer import FER
-import cv2
+import cv2, pymongo, time
 
 
 def get_emotion(image):
-    detector = FER(mtcnn=True)
-    emotions = detector.detect_emotions(image)
-    i = 1
-    res = ""
-    for box in emotions:
-        max_emotion = max(box['emotions'], key=lambda x: box['emotions'][x])
-        res += (f"Person {i} seems to be feeling {max_emotion}\n")
-        i += 1
-    return res
+    """
+    Method for detecting emotions in an image containing humans, using the fer library. Works with images containing multiple faces.
+    """
+    try:
+        detector = FER(mtcnn=True)
+        emotions = detector.detect_emotions(image)
+        i = 1
+        res = ""
+        for box in emotions:
+            max_emotion = max(box['emotions'], key=lambda x: box['emotions'][x])
+            res += (f"Person {i} seems to be feeling {max_emotion}\n")
+            i += 1
+        return res
+    except Exception as e:
+        return f"Error in detecting emotions: {str(e)}"
 
-#im = cv2.imread('./test1.png')
-#print(get_emotion(im))
-"""
-machine-learning-client % python client.py
-Person 1 is feeling happy
-Person 2 is feeling happy
-Person 3 is feeling sad
-"""
+def connect_db():
+    """
+    Method for connecting to the MongoDB Atlas database.
+    """
+    client = pymongo.MongoClient(os.environ['MONGO_URI'])
+    db = client['emotions']
+    collection = db["images"]
+    while True:
+        while collection.find_one() is None:
+            pass
+        emotion_message = get_emotion(collection.find_one()["image"])
+        if collection.find_one():
+            collection.update_one(
+                {
+                    "_id": collection.find_one()["_id"]},  
+                {
+                    "$set": {
+                        #"title": new_title, #need a way to id image
+                        "emotion": emotion_message,
+                        "processed": True,
+                    }
+                },
+            )
+        time.sleep(1)
+    client.close()
+
+if __name__ == "__main__":
+    # Test the get_emotion method for now
+    im = cv2.imread('./test0.png')
+    print(get_emotion(im))
