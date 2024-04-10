@@ -8,6 +8,7 @@ def get_emotion(image):
     """
     Method for detecting emotions in an image containing humans, using the fer library. Works with images containing multiple faces.
     """
+    # edit to return just label
     try:
         detector = FER(mtcnn=True)
         emotions = detector.detect_emotions(image)
