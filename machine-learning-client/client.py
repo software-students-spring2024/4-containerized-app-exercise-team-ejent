@@ -51,5 +51,6 @@ def connect_db():
 
 if __name__ == "__main__":
     # Test the get_emotion method for now, CV2 maybe not necessary
-    im = cv2.imread('./test0.png')
-    print(get_emotion(im))
+    #im = cv2.imread('./test0.png')
+    #print(get_emotion(im))
+    connect_db()
