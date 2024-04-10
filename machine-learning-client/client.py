@@ -26,10 +26,10 @@ def connect_db():
     Method for connecting to the MongoDB Atlas database.
     """
     client = pymongo.MongoClient(os.environ['MONGO_URI'])
-    db = client['emotions']
-    collection = db["images"]
+    db = client["emotionDB"]
+    collection = db["emotions"]
     while True:
-        while collection.find_one() is None:
+        while not collection.find_one():
             pass
         emotion_message = get_emotion(collection.find_one()["image"])
         if collection.find_one():
@@ -38,7 +38,7 @@ def connect_db():
                     "_id": collection.find_one()["_id"]},  
                 {
                     "$set": {
-                        #"title": new_title, #need a way to id image
+                        #"title" or name? , need a way to id image
                         "emotion": emotion_message,
                         "processed": True,
                     }
