@@ -1,7 +1,20 @@
+"""
+Machine learning client for detecting emotions in images.
+This client connects to a MongoDB Atlas database, retrieves images.
+It then processes the images to detect emotions for target faces, and updates db with the results.
+
+...
+"""
+
 import os
-os.environ["IMAGEIO_FFMPEG_EXE"] = "/usr/bin/ffmpeg"
+import time
+from dotenv import load_dotenv
+import cv2
+import pymongo
 from fer import FER
-import cv2, pymongo, time
+
+os.environ["IMAGEIO_FFMPEG_EXE"] = "/usr/bin/ffmpeg"
+
 
 
 def get_emotion(image):
@@ -27,7 +40,8 @@ def connect_db():
     """
     Method for connecting to the MongoDB Atlas database.
     """
-    client = pymongo.MongoClient(os.environ['MONGO_URI'])
+    load_dotenv()
+    client = pymongo.MongoClient(os.getenv("MONGO_URI"))
     db = client["emotionDB"]
     collection = db["emotions"]
     while True:
