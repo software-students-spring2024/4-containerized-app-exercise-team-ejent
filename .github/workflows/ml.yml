@@ -24,3 +24,6 @@ jobs:
         pip install --user pipenv
         pipenv install
         cd machine-learning-client
+    - name: Run tests
+      run: |
+        pipenv run pytest
