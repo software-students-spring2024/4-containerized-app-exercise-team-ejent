@@ -1,4 +1,5 @@
-![Python build & test](https://github.com/software-students-spring2024/4-containerized-app-exercise-team-ejent/actions/workflows/ml.yml/badge.svg) 
+![Python build & test](https://github.com/software-students-spring2024/4-containerized-app-exercise-team-ejent/actions/workflows/ml.yml/badge.svg)
+![Python build & test](https://github.com/software-students-spring2024/4-containerized-app-exercise-team-ejent/actions/workflows/main.yml/badge.svg)
 
 # Containerized Emotion Tracker App
 
