@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.11]
 
     steps:
     - uses: actions/checkout@v2
@@ -23,13 +23,21 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install pipenv
+        pipenv install
+        cd web-app
 
     - name: Run tests
       run: |
-        pytest
+        pipenv run pytest
 
-    - name: Deploy
-      run: |
-        # Replace this with your deployment commands
-        echo "Deploying application"
+    # - name: Docker hub login
+    #   uses:
+    #   with:
+    #     username: $ {{ secrets.DOCKER_USERNAME }}
+    #     password: $ {{ secrets.DOCKER_PASSWORD }}
+
+    # - name: Deploy
+    #   run: |
+    #     # Replace this with your deployment commands
+    #     echo "Deploying application"

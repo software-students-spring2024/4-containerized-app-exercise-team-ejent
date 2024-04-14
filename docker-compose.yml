@@ -1,0 +1,11 @@
+version: 'version 1.0.0'
+services:
+  webapp:
+
+  mlc:
+  
+  mongodb:
+
+volumes:
+
+networks:
