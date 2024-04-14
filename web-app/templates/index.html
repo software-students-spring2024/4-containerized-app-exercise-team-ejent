@@ -58,8 +58,10 @@
 
     <h1>Mood Classifier</h1>
     <video id="video" width="640" height="480" autoplay></video>
+    <input type="text" id="name" placeholder="Enter name for the image">
     <button id="snap">Snap Photo</button>
     <canvas id="canvas" width="640" height="480"></canvas>
+
 
     <script>
       var video = document.getElementById('video');
@@ -74,12 +76,15 @@
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
       var snap = document.getElementById("snap");
+      
 
       snap.addEventListener("click", function () {
+        var nameInput = document.getElementById("name").value;
         context.drawImage(video, 0, 0, 640, 480);
         canvas.toBlob(function (blob) {
           var formData = new FormData();
           formData.append('photo', blob);
+          formData.append('name', nameInput);
 
           fetch('/upload', { method: 'POST', body: formData })
             .then(response => response.json())

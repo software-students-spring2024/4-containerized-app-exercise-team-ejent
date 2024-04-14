@@ -48,9 +48,8 @@ def connect_db():
                     "_id": collection.find_one()["_id"]},  
                 {
                     "$set": {
-                        #name? , need a way to id image
                         "emotion": emotion_message,
-                        "processed": True,
+                        "is_processed": True,
                     }
                 },
             )
