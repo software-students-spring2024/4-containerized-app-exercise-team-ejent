@@ -1,11 +1,21 @@
 version: 'version 1.0.0'
 services:
-  webapp:
-
+  web:
+    build: ./web-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    networks:
+      - mongonetwork
   mlc:
-  
+    build: ./machine-learning-client
+
   mongodb:
 
 volumes:
+  mongodata:
 
 networks:
+  mongonetwork:
+    #driver: bridge

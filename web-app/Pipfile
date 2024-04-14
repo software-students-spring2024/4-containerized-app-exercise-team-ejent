@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 pylint = "*"
 black = "*"
+flask = "*"
+pymongo = "*"
+cv2 = "*"
 
 [dev-packages]
 

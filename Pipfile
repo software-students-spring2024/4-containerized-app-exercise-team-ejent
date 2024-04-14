@@ -4,6 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pylint = "*"
+black = "*"
+tomli = "*"
+pytest = "*"
+mongomock = "*"
+flask = "*"
+pymongo = "*"
+
 
 [dev-packages]
 
