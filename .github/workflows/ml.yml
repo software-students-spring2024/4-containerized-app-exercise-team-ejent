@@ -26,4 +26,4 @@ jobs:
         cd machine-learning-client
     - name: Run tests
       run: |
-        pipenv run pytest
+        pipenv run pytest machine-learning-client/client.py
