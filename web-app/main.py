@@ -62,11 +62,10 @@ def upload_file():
 def result():
     """Retrieve the processed document and render the result.html template"""
     retrieved = temp.find_one_and_delete({})
+    if retrieved is None:
+        return "No results found", 404
     name, emotion_message = retrieved["name"], retrieved["emotion"]
-    result = f"Image: {name}\n"
-    for emotion, score in emotion_message.items():
-        result += f"{emotion}: {score:.2f}%\n"  # Removed multiplication by 100
-    return render_template('result.html', message=result)
-
+    emotion_message["Image"] = name
+    return render_template('result.html', message=emotion_message)
 if __name__ == "__main__":
     app.run(debug=True)
