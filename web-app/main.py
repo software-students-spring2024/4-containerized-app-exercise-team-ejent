@@ -7,7 +7,7 @@ Base64: Encode and decode images
 import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
-from werkzeug.utils import secure_filename
+#from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ app.config["MONGO_CONN"] = MongoClient("mongodb://localhost:27017/")
 
 client = app.config["MONGO_CONN"]
 db = client["emotion_detection"]
-collection = db["emotion_images"]
+temp = db["temp_store"]
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
 
@@ -34,15 +34,13 @@ count = 0
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
-    print(request)
     global count
     if "photo" in request.files:
         photo = request.files["photo"]
-        name = request.form.get("name") 
+        name = request.form.get("name")
         if not name:
             name = f"image_{count}"
             count += 1
-        print(photo.filename, name)
         if photo.filename == "":
             return jsonify({"message": "No file selected"})
         if photo: #and allowed_file(photo.filename):
@@ -54,13 +52,13 @@ def upload_file():
                 "is_processed": False,
                 "photo": encoded,
             }
-            collection.insert_one(ins)
-            while collection.find_one({"processed": True}) is None:
+            temp.insert_one(ins)
+            while temp.find_one({"is_processed": True}) is None:
                 pass
-            retrieved = collection.find_one_and_delete({})
+            retrieved = temp.find_one_and_delete({})
             name, emotion_message = retrieved["name"], retrieved["emotion"]
             result = f"Image: {name}\nEmotion: {emotion_message}"
-    
+            print(result)
         else:
             return jsonify({"message": "Invalid file type"})
     return jsonify({"message": "No file Uploaded"})
