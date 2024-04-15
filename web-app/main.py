@@ -1,13 +1,11 @@
 """
 Pymongo: Connecting to MongoDB via Python
 Flask: Python web framework
-Werkzeug: WSGI utility library for Python
 Base64: Encode and decode images
 """
 import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
-#from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)

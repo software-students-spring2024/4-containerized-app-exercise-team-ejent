@@ -3,7 +3,7 @@ pytest: write tests for our code
 io: work with file-like objects
 """
 from io import BytesIO
-from app import app as flask_app
+from main import app as flask_app
 from flask import url_for
 import pytest
 
