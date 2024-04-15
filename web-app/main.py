@@ -65,7 +65,7 @@ def result():
     if retrieved is None:
         return "No results found", 404
     name, emotion_message = retrieved["name"], retrieved["emotion"]
-    emotion_message["Image"] = name
+    emotion_message["image name"] = name
     return render_template('result.html', message=emotion_message)
 if __name__ == "__main__":
     app.run(debug=True)
