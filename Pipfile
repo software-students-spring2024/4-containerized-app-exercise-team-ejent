@@ -18,6 +18,7 @@ numpy = "*"
 pillow = "*"
 jinja2 = "*"
 coverage = "*"
+pytest-cov = "*"
 
 
 [dev-packages]

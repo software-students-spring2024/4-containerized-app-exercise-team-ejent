@@ -7,15 +7,15 @@ name = "pypi"
 pymongo = "*"
 deepface = "*"
 python-dotenv = "*"
-tf-keras = "*"
+tensorflow = "*"
 pylint = "*"
 black = "*"
 pytest = "*"
 coverage = "*"
 pillow = "*"
-
+mongomock = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
+python_version = "3.10"

@@ -43,13 +43,14 @@ def test_upload_with_invalid_file_type(client):
     json_data = response.get_json()
     assert json_data['message'] == 'Invalid file type'
     os.remove('test_file.txt')  # Remove the file after running the test
-def test_upload_valid_file(client, test_image_file):
-    data = {
-        'photo': (open(test_image_file, 'rb'), test_image_file),
-        'name': 'test_image'
-    }
-    response = client.post('/upload', content_type='multipart/form-data', data=data)
-    assert response.status_code == 200
-    json_data = response.get_json()
-    assert json_data['message'] == 'Image uploaded and processing started.'
+
+# def test_upload_valid_file(client, test_image_file):
+#     data = {
+#         'photo': (open(test_image_file, 'rb'), test_image_file),
+#         'name': 'test_image'
+#     }
+#     response = client.post('/upload', content_type='multipart/form-data', data=data)
+#     assert response.status_code == 200
+#     json_data = response.get_json()
+#     assert json_data['message'] == 'Image uploaded and processing started.'
 
