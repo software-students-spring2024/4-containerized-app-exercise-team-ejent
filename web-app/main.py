@@ -30,20 +30,23 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
-count = 0
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
-    global count
-    if "photo" in request.files:
+    if "photo" in request.files and 'name' in request.form:
         photo = request.files["photo"]
         name = request.form.get("name")
         if not name:
-            name = f"image_{count}"
-            count += 1
+            return jsonify({"message": "No name provided"}), 400
         if photo.filename == "":
             return jsonify({"message": "No file selected"})
-        if photo: #and allowed_file(photo.filename):
+        if photo and allowed_file(photo.filename):
             image_data = photo.read()
             encoded = base64.b64encode(image_data).decode('utf-8')
             ins = {
@@ -55,17 +58,19 @@ def upload_file():
             temp.insert_one(ins)
             return jsonify({"message": "Image uploaded and processing started."})
         else:
-            return jsonify({"message": "Invalid file type"})
-    return jsonify({"message": "No file Uploaded"})
-
+            return jsonify({"message": "Invalid file type"}), 400
+    return jsonify({"message": "No file or name provided"}), 400
 @app.route("/result")
 def result():
     """Retrieve the processed document and render the result.html template"""
     retrieved = temp.find_one_and_delete({})
     if retrieved is None:
-        return "No results found", 404
+        return jsonify({"message": "No processed document found"}), 404
     name, emotion_message = retrieved["name"], retrieved["emotion"]
-    emotion_message["Image"] = name
+    if isinstance(emotion_message, dict):
+        emotion_message["Image"] = name
+    else:
+        emotion_message = {"Image": name, "emotion": emotion_message}
     return render_template('result.html', message=emotion_message)
 if __name__ == "__main__":
     app.run(debug=True)
