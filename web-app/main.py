@@ -7,7 +7,6 @@ import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "you-will-never-guess"
 app.config["MONGO_CONN"] = MongoClient("mongodb://localhost:27017/")
@@ -15,12 +14,6 @@ app.config["MONGO_CONN"] = MongoClient("mongodb://localhost:27017/")
 client = app.config["MONGO_CONN"]
 db = client["emotion_detection"]
 temp = db["temp_store"]
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
-
-
-def allowed_file(filename):
-    """Check if the file extension is allowed"""
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route("/")
@@ -28,11 +21,6 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
@@ -44,7 +32,7 @@ def upload_file():
             return jsonify({"message": "No name provided"}), 400
         if photo.filename == "":
             return jsonify({"message": "No file selected"})
-        if photo and allowed_file(photo.filename):
+        if photo:
             image_data = photo.read()
             encoded = base64.b64encode(image_data).decode('utf-8')
             ins = {
@@ -58,6 +46,7 @@ def upload_file():
         else:
             return jsonify({"message": "Invalid file type"}), 400
     return jsonify({"message": "No file or name provided"}), 400
+
 @app.route("/result")
 def result():
     """Retrieve the processed document and render the result.html template"""
