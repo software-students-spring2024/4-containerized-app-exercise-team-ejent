@@ -1,6 +1,7 @@
 version: 'version 1.0.0'
 services:
   web:
+    image: ...
     build: ./web-app
     ports:
       - "5000:5000"
@@ -9,10 +10,24 @@ services:
     networks:
       - mongonetwork
   mlc:
+    image: ...
     build: ./machine-learning-client
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+    networks:
+      - mongonetwork
 
   mongodb:
-
+    image: ...
+    build: ./database
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - mongonetwork
 volumes:
   mongodata:
 

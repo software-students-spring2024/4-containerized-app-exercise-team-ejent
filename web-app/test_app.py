@@ -1,14 +1,16 @@
-# test_main.py
-import pytest
-from flask import url_for
+"""
+pytest: write tests for our code
+io: work with file-like objects
+"""
 from io import BytesIO
-from web_app.main import app
-
+from app import app as flask_app
+from flask import url_for
+import pytest
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
+    flask_app.config['TESTING'] = True
+    with flask_app.test_client() as client:
         yield client
 
 def test_index(client):

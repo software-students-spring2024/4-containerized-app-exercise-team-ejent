@@ -2,7 +2,10 @@
 Machine learning client for detecting emotions in images.
 This client connects to a MongoDB Atlas database, retrieves images.
 It then processes the images to detect emotions for target faces, and updates db with the results.
-
+OS: to set environment variable for ffmpeg
+Time: to sleep for a second
+Pymongo: to connect to MongoDB
+FER: to detect emotions in images
 ...
 """
 import os
@@ -29,16 +32,16 @@ def get_emotion(image):
             i += 1
         return res
     except Exception as e:
-        return f"ERROR: \n{str(e)}"
+        return f"ERROR: Couldn't detect a face for emotion. {e}"
 
-def connect_db():
+def connect_db(option):
     """
     Method for connecting to the MongoDB client.
     """
     client = pymongo.MongoClient("mongodb://mongodb:27017/")
     db = client["emotion_detection"]
     collection = db["emotion_images"]
-    while True:
+    while option:
         while not collection.find_one():
             pass
         emotion_message = get_emotion(collection.find_one()["image"])
@@ -57,7 +60,5 @@ def connect_db():
     client.close()
 
 if __name__ == "__main__":
-    # Test the get_emotion method for now, CV2 maybe not necessary
     #im = cv2.imread('./test0.png')
-    #print(get_emotion(im))
-    connect_db()
+    connect_db(True)
