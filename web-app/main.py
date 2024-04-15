@@ -64,7 +64,7 @@ def result():
     retrieved = temp.find_one_and_delete({})
     if retrieved is None:
         return jsonify({"message": "No processed document found"}), 404
-    name, emotion_message = retrieved["name"], retrieved["emotion"]
+    emotion_message = retrieved["emotion"]
     return render_template('result.html', message=emotion_message)
 if __name__ == "__main__":
     app.run(debug=True)
