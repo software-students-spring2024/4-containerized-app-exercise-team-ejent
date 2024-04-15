@@ -4,18 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cv2 = "*"
+#cv2 = "*"
 pymongo = "*"
 fer = "*"
 python-dotenv = "*"
 tensorflow = ">=1.7"
-opencv-contrib-python = "==3.3.0.9"
-
-
-[dev-packages]
+opencv-contrib-python = "*"
 pylint = "*"
 black = "*"
 pytest = "*"
+coverage = "*"
+ffmpeg = "*"
+moviepy =  "*"
+
+
+[dev-packages]
+
 
 [requires]
 python_version = "3.11"

@@ -11,6 +11,11 @@ pytest = "*"
 mongomock = "*"
 flask = "*"
 pymongo = "*"
+ffmpeg = "*"
+moviepy =  "*"
+fer = "*"
+tensorflow = ">=1.7"
+opencv-contrib-python = "*"
 
 
 [dev-packages]
