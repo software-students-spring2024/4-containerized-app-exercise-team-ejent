@@ -16,6 +16,8 @@ python-dotenv = "*"
 tf-keras = "*"
 numpy = "*"
 pillow = "*"
+jinja2 = "*"
+coverage = "*"
 
 
 [dev-packages]

@@ -1,13 +1,11 @@
 """
 Pymongo: Connecting to MongoDB via Python
 Flask: Python web framework
-Werkzeug: WSGI utility library for Python
 Base64: Encode and decode images
 """
 import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
-#from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -67,10 +65,6 @@ def result():
     if retrieved is None:
         return jsonify({"message": "No processed document found"}), 404
     name, emotion_message = retrieved["name"], retrieved["emotion"]
-    if isinstance(emotion_message, dict):
-        emotion_message["Image"] = name
-    else:
-        emotion_message = {"Image": name, "emotion": emotion_message}
     return render_template('result.html', message=emotion_message)
 if __name__ == "__main__":
     app.run(debug=True)

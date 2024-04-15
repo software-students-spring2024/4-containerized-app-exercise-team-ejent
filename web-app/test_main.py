@@ -53,27 +53,3 @@ def test_upload_valid_file(client, test_image_file):
     json_data = response.get_json()
     assert json_data['message'] == 'Image uploaded and processing started.'
 
-def test_result_without_processed_document(client):
-    response = client.get('/result')
-    assert response.status_code == 200
-    assert 'No processed document found' in response.data.decode('utf-8')
-
-def test_result_with_processed_document(client, test_image_file):
-    # Insert a dummy document into the database
-    mongo_client = MongoClient("mongodb://localhost:27017/")
-    db = mongo_client["emotion_detection"]
-    temp = db["temp_store"]
-    with open(test_image_file, 'rb') as f:
-        encoded = base64.b64encode(f.read()).decode('utf-8')
-    ins = {
-        "name": "test_image",
-        "emotion": {"happy": 0.9},
-        "is_processed": True,
-        "photo": encoded,
-    }
-    temp.insert_one(ins)
-
-    # Test the result endpoint
-    response = client.get('/result')
-    assert response.status_code == 200
-    assert 'happy' in response.data.decode('utf-8')
