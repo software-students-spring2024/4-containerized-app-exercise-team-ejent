@@ -6,7 +6,6 @@ Time: sleep for a second
 Pymongo: connect to MongoDB
 Deepface: to detect emotions in images
 Numpy: numerical operations
-...
 """
 import base64
 from PIL import Image
@@ -16,10 +15,11 @@ import time
 import pymongo
 import numpy as np
     
+
 def get_emotion(image):
     """
     Method for detecting emotions in an image containing humans, 
-    using the deepface library. Works with images containing multiple faces.
+    using the deepface library. Works with images containing multiple faces, returns sentiment for majority.
     """
     try:
         bin_data = base64.b64decode(image)
@@ -29,8 +29,11 @@ def get_emotion(image):
         emotions = obj[0]['emotion']
         return emotions
     except Exception as e:
-        return f"ERROR: Couldn't detect a face for emotion. {e}"
+        return f"ERROR: {e}"
 
+def run_connection(option):
+    "arranged for utility"
+    connect_db(option)
 
 def connect_db(option):
     """
@@ -45,6 +48,8 @@ def connect_db(option):
             pass
         x = temp.find_one()
         emotion_message = get_emotion(x["photo"])
+        if not emotion_message:
+            return "No emotions found"
         if temp.find_one():
             temp.update_one(
                 {
@@ -56,11 +61,8 @@ def connect_db(option):
                     }
                 },
             )
-        #print("REACHED HERE!")
         time.sleep(1)
     client.close()
 
-
 if __name__ == "__main__":
-     #im = cv2.imread('./test0.png')
-    connect_db(True)
+    run_connection(True)
