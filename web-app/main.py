@@ -57,8 +57,11 @@ def upload_file():
                 pass
             retrieved = temp.find_one_and_delete({})
             name, emotion_message = retrieved["name"], retrieved["emotion"]
-            result = f"Image: {name}\nEmotion: {emotion_message}"
-            print(result)
+            result = f"Image: {name}\n"
+            for emotion, score in emotion_message.items():
+                result += f"{emotion}: {score * 100:.2f}%\n"
+            return jsonify({"message": result})
+
         else:
             return jsonify({"message": "Invalid file type"})
     return jsonify({"message": "No file Uploaded"})
