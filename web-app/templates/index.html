@@ -60,8 +60,8 @@
     <video id="video" width="640" height="480" autoplay></video>
     <input type="text" id="name" placeholder="Enter name for the image">
     <button id="snap">Snap Photo</button>
+    <button id="view-results">View Emotion Results</button>
     <canvas id="canvas" width="640" height="480"></canvas>
-
 
     <script>
       var video = document.getElementById('video');
@@ -76,7 +76,6 @@
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
       var snap = document.getElementById("snap");
-      
 
       snap.addEventListener("click", function () {
         var nameInput = document.getElementById("name").value;
@@ -96,6 +95,11 @@
               console.error(error);
             });
         }, 'image/jpeg');
+      });
+
+      var viewResults = document.getElementById("view-results");
+      viewResults.addEventListener("click", function () {
+        window.location.href = "/result";
       });
     </script>
 

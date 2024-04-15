@@ -24,7 +24,6 @@ def get_emotion(image):
     try:
         bin_data = base64.b64decode(image)
         im = Image.open(io.BytesIO(bin_data))
-        im.save("image1.jpg")
         image_np = np.array(im)
         obj = DeepFace.analyze(image_np, actions=['emotion'])
         emotions = obj[0]['emotion']

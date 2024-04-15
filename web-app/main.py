@@ -53,15 +53,7 @@ def upload_file():
                 "photo": encoded,
             }
             temp.insert_one(ins)
-            while temp.find_one({"is_processed": True}) is None:
-                pass
-            retrieved = temp.find_one_and_delete({})
-            name, emotion_message = retrieved["name"], retrieved["emotion"]
-            result = f"Image: {name}\n"
-            for emotion, score in emotion_message.items():
-                result += f"{emotion}: {score * 100:.2f}%\n"
-            return jsonify({"message": result})
-
+            return jsonify({"message": "Image uploaded and processing started."})
         else:
             return jsonify({"message": "Invalid file type"})
     return jsonify({"message": "No file Uploaded"})
@@ -73,7 +65,7 @@ def result():
     name, emotion_message = retrieved["name"], retrieved["emotion"]
     result = f"Image: {name}\n"
     for emotion, score in emotion_message.items():
-        result += f"{emotion}: {score * 100:.2f}%\n"
+        result += f"{emotion}: {score:.2f}%\n"  # Removed multiplication by 100
     return render_template('result.html', message=result)
 
 if __name__ == "__main__":
