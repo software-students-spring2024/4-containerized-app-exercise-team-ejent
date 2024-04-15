@@ -66,6 +66,15 @@ def upload_file():
             return jsonify({"message": "Invalid file type"})
     return jsonify({"message": "No file Uploaded"})
 
+@app.route("/result")
+def result():
+    """Retrieve the processed document and render the result.html template"""
+    retrieved = temp.find_one_and_delete({})
+    name, emotion_message = retrieved["name"], retrieved["emotion"]
+    result = f"Image: {name}\n"
+    for emotion, score in emotion_message.items():
+        result += f"{emotion}: {score * 100:.2f}%\n"
+    return render_template('result.html', message=result)
 
 if __name__ == "__main__":
     app.run(debug=True)
