@@ -8,47 +8,48 @@ Pymongo: to connect to MongoDB
 FER: to detect emotions in images
 ...
 """
-import os
+import base64
+from PIL import Image
+import io
+from deepface import DeepFace
 import time
 import pymongo
-from fer import FER
-
-os.environ["IMAGEIO_FFMPEG_EXE"] = "/usr/bin/ffmpeg"
-
+import numpy as np
+    
 def get_emotion(image):
     """
     Method for detecting emotions in an image containing humans, 
-    using the fer library. Works with images containing multiple faces.
+    using the deepface library. Works with images containing multiple faces.
     """
-    # edit to return just label
     try:
-        detector = FER(mtcnn=True)
-        emotions = detector.detect_emotions(image)
-        i = 1
-        res = ""
-        for box in emotions:
-            max_emotion = max(box['emotions'], key=lambda x: box['emotions'][x])
-            res += (f"Person {i} seems to be feeling {max_emotion}\n")
-            i += 1
-        return res
+        bin_data = base64.b64decode(image)
+        im = Image.open(io.BytesIO(bin_data))
+        im.save("image1.jpg")
+        image_np = np.array(im)
+        obj = DeepFace.analyze(image_np, actions=['emotion'])
+        emotions = obj[0]['emotion']
+        return emotions
     except Exception as e:
         return f"ERROR: Couldn't detect a face for emotion. {e}"
+
 
 def connect_db(option):
     """
     Method for connecting to the MongoDB client.
     """
-    client = pymongo.MongoClient("mongodb://mongodb:27017/")
+    client = pymongo.MongoClient("mongodb://localhost:27017/")
     db = client["emotion_detection"]
-    collection = db["emotion_images"]
+    temp = db["temp_store"]
+
     while option:
-        while not collection.find_one():
+        while temp.find_one() is None:
             pass
-        emotion_message = get_emotion(collection.find_one()["image"])
-        if collection.find_one():
-            collection.update_one(
+        x = temp.find_one()
+        emotion_message = get_emotion(x["photo"])
+        if temp.find_one():
+            temp.update_one(
                 {
-                    "_id": collection.find_one()["_id"]},  
+                    "_id": temp.find_one()["_id"]},  
                 {
                     "$set": {
                         "emotion": emotion_message,
@@ -56,9 +57,11 @@ def connect_db(option):
                     }
                 },
             )
+        #print("REACHED HERE!")
         time.sleep(1)
     client.close()
 
+
 if __name__ == "__main__":
-    #im = cv2.imread('./test0.png')
+     #im = cv2.imread('./test0.png')
     connect_db(True)
