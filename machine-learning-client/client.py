@@ -2,10 +2,10 @@
 Machine learning client for detecting emotions in images.
 This client connects to a MongoDB Atlas database, retrieves images.
 It then processes the images to detect emotions for target faces, and updates db with the results.
-OS: to set environment variable for ffmpeg
-Time: to sleep for a second
-Pymongo: to connect to MongoDB
-FER: to detect emotions in images
+Time: sleep for a second
+Pymongo: connect to MongoDB
+Deepface: to detect emotions in images
+Numpy: numerical operations
 ...
 """
 import base64

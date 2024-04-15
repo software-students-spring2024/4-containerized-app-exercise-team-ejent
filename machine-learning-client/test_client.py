@@ -1,7 +1,7 @@
 from unittest.mock import patch, MagicMock
 import pytest, os
-from client import get_emotion, connect_db, FER
-#from PIL import Image
+from client import connect_db, get_emotion
+from PIL import Image
 
 os.environ["IMAGEIO_FFMPEG_EXE"] = "/usr/bin/ffmpeg"
 
