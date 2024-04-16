@@ -18,8 +18,9 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
+# pylint: disable=redefined-outer-name
 @app.route("/upload", methods=["POST"])
-def upload_file(): # pylint: disable=redefined-outer-name
+def upload_file():
     """Upload image file and send it to the ML model for processing"""
     name = request.form.get("name")
     if not name:
@@ -48,8 +49,7 @@ def upload_file(): # pylint: disable=redefined-outer-name
             return render_template(
                 "result.html", message=response["emotion"], name=response["name"]
             )
-    else:
-        return jsonify({"message": "No photo provided"})
+    return jsonify({"message": "No photo provided"})
 
 
 @app.after_request
