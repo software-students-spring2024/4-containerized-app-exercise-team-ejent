@@ -3,7 +3,7 @@
 
 # Containerized Emotion Tracker App
 
-## Description
+## Description 
 
 The Containerized Emotion Tracker App is a web application designed to help users track their emotions over time. The app allows users to log their emotions at different times throughout the day. The app is built with Python via Flask and is containerized using Docker for easy deployment and scalability.
 
