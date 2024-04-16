@@ -14,26 +14,28 @@ from deepface import DeepFace
 import time
 import pymongo
 import numpy as np
-    
+
 
 def get_emotion(image):
     """
-    Method for detecting emotions in an image containing humans, 
+    Method for detecting emotions in an image containing humans,
     using the deepface library. Works with images containing multiple faces, returns sentiment for majority.
     """
     try:
         bin_data = base64.b64decode(image)
         im = Image.open(io.BytesIO(bin_data))
         image_np = np.array(im)
-        obj = DeepFace.analyze(image_np, actions=['emotion'] , enforce_detection=False)
-        emotions = obj[0]['emotion']
+        obj = DeepFace.analyze(image_np, actions=["emotion"], enforce_detection=False)
+        emotions = obj[0]["emotion"]
         return emotions
     except Exception as e:
         return f"ERROR: {e}"
 
+
 def run_connection(option):
     "arranged for utility"
     connect_db(option)
+
 
 def connect_db(option):
     """
@@ -52,8 +54,7 @@ def connect_db(option):
             return "No emotions found"
         if temp.find_one():
             temp.update_one(
-                {
-                    "_id": temp.find_one()["_id"]},  
+                {"_id": temp.find_one()["_id"]},
                 {
                     "$set": {
                         "emotion": emotion_message,
@@ -63,6 +64,7 @@ def connect_db(option):
             )
         time.sleep(1)
     client.close()
+
 
 if __name__ == "__main__":
     run_connection(True)
