@@ -16,17 +16,17 @@
     </style>
 </head>
 <body>
-    <h1>Most Recent Emotion Result</h1>
+    <h1>Emotion Results</h1>
     <table>
         <tr>
-            <th>Emotion</th>
-            <th>Score</th>
+            <th>Name</th>
+            <th>Emotion Message</th>
         </tr>
-        {% for emotion, score in message.items() %}
-            <tr>
-                <td>{{ emotion }}</td>
-                <td>{{ score }}</td>
-            </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.name }}</td>
+            <td>{{ result.emotion }}</td>
+        </tr>
         {% endfor %}
     </table>
     <button onclick="location.href='/'" type="button">Do another</button>

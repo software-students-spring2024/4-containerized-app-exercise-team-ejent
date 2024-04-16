@@ -21,15 +21,19 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
+# Create a new collection for the results
+results_db = db["results_store"]
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
-    if "photo" in request.files and 'name' in request.form:
+    global count
+    name = request.form.get("name")
+    if not name:
+        name = f"image_{count}"
+        count += 1
+    if "photo" in request.files:
         photo = request.files["photo"]
-        name = request.form.get("name")
-        if not name:
-            return jsonify({"message": "No name provided"}), 400
         if photo.filename == "":
             return jsonify({"message": "No file selected"})
         if photo:
@@ -42,18 +46,25 @@ def upload_file():
                 "photo": encoded,
             }
             temp.insert_one(ins)
-            return jsonify({"message": "Image uploaded and processing started."})
-        else:
-            return jsonify({"message": "Invalid file type"}), 400
-    return jsonify({"message": "No file or name provided"}), 400
+            while temp.find_one({"is_processed": True}) is None:
+                pass
+            response = temp.find_one_and_delete({})
+            temp.delete_many({})
 
+            # Store the result in the 'results_store' collection
+            result = {"name": response["name"], "emotion": response["emotion"]}
+            results_db.insert_one(result)
+
+            return render_template ("result.html", message=response["emotion"], name=response["name"])
+    else:
+        return jsonify({"message": "No photo provided"})
 @app.route("/result")
 def result():
     """Retrieve the processed document and render the result.html template"""
-    retrieved = temp.find_one_and_delete({})
-    if retrieved is None:
+    # Fetch all the results from the 'results_store' collection
+    results = list(results_db.find({}, {"_id": 0, "name": 1, "emotion": 1}))
+    if not results:
         return jsonify({"message": "No processed document found"}), 404
-    emotion_message = retrieved["emotion"]
-    return render_template('result.html', message=emotion_message)
+    return render_template('result.html', results=results)  # pass the results to the templateresults to the template
 if __name__ == "__main__":
     app.run(debug=True)
