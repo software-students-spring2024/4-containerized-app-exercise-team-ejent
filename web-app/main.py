@@ -17,7 +17,6 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
-
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
