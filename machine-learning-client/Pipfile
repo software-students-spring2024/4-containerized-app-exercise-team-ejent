@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 pymongo = "*"
 deepface = "*"
-tenserflow = "*"
+tensorflow = "*"
 keras = "*"
 opencv-python = "*"
 pandas = "*"
