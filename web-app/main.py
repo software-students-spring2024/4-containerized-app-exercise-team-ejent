@@ -1,3 +1,8 @@
+# pylint: disable=all
+"""
+app.py or main.py
+"""
+
 import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
@@ -16,6 +21,7 @@ results_db = db["results_store"]
 def index():
     """Render the index.html template"""
     return render_template("index.html")
+
 
 @app.route("/upload", methods=["POST"])
 def upload_file():

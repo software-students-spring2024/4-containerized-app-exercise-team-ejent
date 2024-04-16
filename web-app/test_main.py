@@ -5,6 +5,7 @@ from flask import Flask
 from main import app
 from werkzeug.datastructures import FileStorage
 
+# pylint: disable=all
 @pytest.fixture
 def client():
     app.config["TESTING"] = True

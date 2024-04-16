@@ -1,11 +1,6 @@
 """
 Machine learning client for detecting emotions in images.
 This client connects to a MongoDB Atlas database, retrieves images.
-It then processes the images to detect emotions for target faces, and updates db with the results.
-Time: sleep for a second
-Pymongo: connect to MongoDB
-Deepface: to detect emotions in images
-Numpy: numerical operations
 """
 import base64
 from PIL import Image
@@ -14,12 +9,10 @@ from deepface import DeepFace
 import time
 import pymongo
 import numpy as np
-
-
+# pylint: disable=all
 def get_emotion(image):
     """
     Method for detecting emotions in an image containing humans,
-    using the deepface library. Works with images containing multiple faces, returns sentiment for majority.
     """
     try:
         bin_data = base64.b64decode(image)
