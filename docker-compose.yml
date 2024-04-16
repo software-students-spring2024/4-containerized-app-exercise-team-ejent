@@ -1,7 +1,7 @@
-version: 'version 1.0.0'
+version: '3.10'
 services:
   web:
-    image: ...
+    image: jladrover/emotion_tracker:web-app
     build: ./web-app
     ports:
       - "5000:5000"
@@ -10,7 +10,7 @@ services:
     networks:
       - mongonetwork
   mlc:
-    image: ...
+    image: jladrover/emotion_tracker:client
     build: ./machine-learning-client
     ports:
       - "3001:3001"
@@ -20,7 +20,7 @@ services:
       - mongonetwork
 
   mongodb:
-    image: ...
+    image: jladrover/emotion_tracker:mongo
     build: ./database
     ports:
       - "27017:27017"
