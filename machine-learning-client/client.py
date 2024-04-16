@@ -8,10 +8,10 @@ Deepface: to detect emotions in images
 Numpy: numerical operations
 """
 import base64
-from PIL import Image
 import io
-from deepface import DeepFace
 import time
+from PIL import Image
+from deepface import DeepFace
 import pymongo
 import numpy as np
 
@@ -19,7 +19,7 @@ import numpy as np
 def get_emotion(image):
     """
     Method for detecting emotions in an image containing humans,
-    using the deepface library. Works with images containing multiple faces, returns sentiment for majority.
+    using the deepface library. Works with multiple face, returns sentiment for majority.
     """
     try:
         bin_data = base64.b64decode(image)

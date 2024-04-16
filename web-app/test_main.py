@@ -1,35 +1,34 @@
-import base64
+"Web app test file"
 import io
 import pytest
-from flask import Flask
 from main import app
-from werkzeug.datastructures import FileStorage
 #update
-@pytest.fixture
+@pytest.fixture(name="client")
 def client():
+    """Create a test client for the flask application"""
     app.config["TESTING"] = True
-    with app.test_client() as client:
-        yield client
+    with app.test_client() as mock_client:
+        yield mock_client
 
 
-def test_index(client):
+def test_index(mock_client):
     """Test the index route"""
-    response = client.get("/")
+    response = mock_client.get("/")
     assert response.status_code == 200
     assert b"<!DOCTYPE html>\n<html>\n<head>\n" in response.data
 
 
-def test_upload_file_no_photo(client):
+def test_upload_file_no_photo(mock_client):
     """Test the /upload endpoint with no photo"""
-    response = client.post("/upload", data={"name": "test"})
+    response = mock_client.post("/upload", data={"name": "test"})
     assert response.status_code == 200
     assert b"No photo provided" in response.data
 
 
-def test_upload_file_no_name(client):
+def test_upload_file_no_name(mock_client):
     """Test the /upload endpoint with no name"""
     data = {"photo": (io.BytesIO(b"this is a test"), "test.jpg")}
-    response = client.post("/upload", data=data)
+    response = mock_client.post("/upload", data=data)
     assert response.status_code == 200
     assert b"No name provided" in response.data
 

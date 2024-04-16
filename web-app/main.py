@@ -1,3 +1,4 @@
+"""Main module for the web application"""
 import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
@@ -53,6 +54,7 @@ def upload_file():
 
 @app.after_request
 def add_header(response):
+    "add header"
     response.headers["Cache-Control"] = "no-store"
     return response
 
