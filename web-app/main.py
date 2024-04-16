@@ -23,15 +23,12 @@ def index():
 
 # Create a new collection for the results
 results_db = db["results_store"]
-
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
-    global count
     name = request.form.get("name")
     if not name:
-        name = f"image_{count}"
-        count += 1
+        return jsonify({"message": "No name provided"})
     if "photo" in request.files:
         photo = request.files["photo"]
         if photo.filename == "":
