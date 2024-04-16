@@ -10,15 +10,16 @@ tensorflow = "*"
 keras = "*"
 opencv-python = "*"
 pandas = "*"
-pytest = "*"
-pillow = "*"
 numpy = "*"
+pillow = "*"
 
 [dev-packages]
+pytest = "*"
 pylint = "*"
 black = "*"
 python-dotenv = "*"
 coverage = "*"
+tomli = "*"
 
 [requires]
 python_version = "3.11"
