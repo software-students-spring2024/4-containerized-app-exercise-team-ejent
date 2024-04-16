@@ -6,16 +6,19 @@ name = "pypi"
 [packages]
 pymongo = "*"
 deepface = "*"
-python-dotenv = "*"
-tensorflow = "*"
-pylint = "*"
-black = "*"
+tenserflow = "*"
+keras = "*"
+opencv-python = "*"
+pandas = "*"
 pytest = "*"
-coverage = "*"
 pillow = "*"
-mongomock = "*"
+numpy = "*"
 
 [dev-packages]
+pylint = "*"
+black = "*"
+python-dotenv = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.11"
