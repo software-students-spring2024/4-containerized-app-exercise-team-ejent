@@ -1,12 +1,6 @@
+"""Testing client.py"""
 from unittest.mock import patch
-import mongomock
-import base64
-import io, cv2, os, pytest
-from client import connect_db, get_emotion, run_connection, DeepFace
-from PIL import Image
-from pymongo import MongoClient
-import pytest
-import time
+from client import connect_db, run_connection
 
 
 def test_bad_connection():

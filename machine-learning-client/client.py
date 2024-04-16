@@ -16,6 +16,7 @@ import pymongo
 import numpy as np
 
 
+# pylint: disable=broad-exception-caught
 def get_emotion(image):
     """
     Method for detecting emotions in an image containing humans,
@@ -37,6 +38,7 @@ def run_connection(option):
     connect_db(option)
 
 
+# pylint: disable=inconsistent-return-statements
 def connect_db(option):
     """
     Method for connecting to the MongoDB client.
