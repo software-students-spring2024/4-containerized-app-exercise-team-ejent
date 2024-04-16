@@ -18,6 +18,7 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
+
 # pylint: disable=redefined-outer-name
 @app.route("/upload", methods=["POST"])
 def upload_file():
