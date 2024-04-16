@@ -25,7 +25,7 @@ def get_emotion(image):
         bin_data = base64.b64decode(image)
         im = Image.open(io.BytesIO(bin_data))
         image_np = np.array(im)
-        obj = DeepFace.analyze(image_np, actions=['emotion'])
+        obj = DeepFace.analyze(image_np, actions=['emotion'] , enforce_detection=False)
         emotions = obj[0]['emotion']
         return emotions
     except Exception as e:

@@ -49,7 +49,8 @@ def upload_file():
             while temp.find_one({"is_processed": True}) is None:
                 pass
             response = temp.find_one_and_delete({})
-            temp.delete_many({})
+            temp.find_one_and_delete({"name": response["name"]})
+
 
             # Store the result in the 'results_store' collection
             result = {"name": response["name"], "emotion": response["emotion"]}
@@ -58,11 +59,21 @@ def upload_file():
             return render_template ("result.html", message=response["emotion"], name=response["name"])
     else:
         return jsonify({"message": "No photo provided"})
+    
+
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
+
 @app.route("/result")
 def result():
     """Retrieve the processed document and render the result.html template"""
     # Fetch all the results from the 'results_store' collection
-    results = list(results_db.find({}, {"_id": 0, "name": 1, "emotion": 1}))
+    # Fetch the latest document based on an identifier or timestamp
+    results = list(results_db.find().sort('_id', -1).limit(1))  # Fetching the most recent result
+
     if not results:
         return jsonify({"message": "No processed document found"}), 404
     return render_template('result.html', results=results)  # pass the results to the templateresults to the template
