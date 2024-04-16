@@ -17,7 +17,6 @@ tf-keras = "*"
 numpy = "*"
 pillow = "*"
 jinja2 = "*"
-coverage = "*"
 pytest-cov = "*"
 
 
