@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0f4901ac8b5f9a14271cb6af4fd9bb95208e017fb6a33647a6e64531bd6fcf34"
+            "sha256": "bfe30b590eea090f85c71b36e5fb4efa3e643c5216379778c79a97dcbd7f458a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -353,7 +353,6 @@
                 "sha256:0be1e89b041e697be562d8422ecb958ee5481acfc089913200926c561d258a03",
                 "sha256:966abbf0dfc1f9725f6293fb2a04ec83f56cd2a800990b38d1a03041255214a7"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.9'",
             "version": "==3.2.1"
         },
@@ -955,7 +954,6 @@
                 "sha256:e9cf3fba7f389ff8b8342c5fbebb2529321e0ce9e03d7bcb3657ee0876686c36",
                 "sha256:f8a5b83ca4bf1813da158f63479cfdf848c0761e5120258417b3a96074a489f5"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.9'",
             "version": "==2.16.1"
         },
@@ -985,6 +983,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.4.0"
+        },
+        "tf-keras": {
+            "hashes": [
+                "sha256:b2ad0541fa7d9e92c4b7a1b96593377afb58aaff374299a6ca6be1a42f51d899",
+                "sha256:db53891f1ac98197c2acced98cdca8c06ba8255655a6cb7eb95ed49676118280"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==2.16.0"
         },
         "tqdm": {
             "hashes": [
