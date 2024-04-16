@@ -21,7 +21,7 @@ services:
 
   mongodb:
     image: jladrover/emotion_tracker:mongo
-    build: ./database
+    build: ./db
     ports:
       - "27017:27017"
     volumes:
