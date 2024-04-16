@@ -7,6 +7,7 @@ Pymongo: connect to MongoDB
 Deepface: to detect emotions in images
 Numpy: numerical operations
 """
+
 import base64
 import io
 import time

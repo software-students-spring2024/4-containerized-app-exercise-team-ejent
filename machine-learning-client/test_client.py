@@ -1,4 +1,5 @@
 """Testing client.py"""
+
 from unittest.mock import patch
 from client import connect_db, run_connection
 
