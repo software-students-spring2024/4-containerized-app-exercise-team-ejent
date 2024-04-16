@@ -11,9 +11,10 @@ import time
 
 def test_bad_connection():
     """Testing loop exit for connection method"""
-    #pylint: disable=unused-variable
+    # pylint: disable=unused-variable
     with patch("pymongo.MongoClient"):
         connect_db(False)
+
 
 def test_connect_option_true():
     """When the flag for running is true"""
@@ -51,6 +52,3 @@ def test_connect_option_false():
 #     with open(".machine/test0.png", "rb") as file:
 #         image = file.read()
 #         #print(get_emotion(base64.b64encode(image).decode("utf-8")))
-
-
-

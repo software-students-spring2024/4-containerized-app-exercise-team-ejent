@@ -1,8 +1,3 @@
-"""
-Pymongo: Connecting to MongoDB via Python
-Flask: Python web framework
-Base64: Encode and decode images
-"""
 import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
@@ -14,6 +9,7 @@ app.config["MONGO_CONN"] = MongoClient("mongodb://localhost:27017/")
 client = app.config["MONGO_CONN"]
 db = client["emotion_detection"]
 temp = db["temp_store"]
+results_db = db["results_store"]
 
 
 @app.route("/")
@@ -21,24 +17,20 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
-# Create a new collection for the results
-results_db = db["results_store"]
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
-    global count
     name = request.form.get("name")
     if not name:
-        name = f"image_{count}"
-        count += 1
+        return jsonify({"message": "No name provided"})
     if "photo" in request.files:
         photo = request.files["photo"]
         if photo.filename == "":
             return jsonify({"message": "No file selected"})
         if photo:
             image_data = photo.read()
-            encoded = base64.b64encode(image_data).decode('utf-8')
+            encoded = base64.b64encode(image_data).decode("utf-8")
             ins = {
                 "name": name,
                 "emotion": "",
@@ -50,32 +42,30 @@ def upload_file():
                 pass
             response = temp.find_one_and_delete({})
             temp.find_one_and_delete({"name": response["name"]})
-
-
-            # Store the result in the 'results_store' collection
             result = {"name": response["name"], "emotion": response["emotion"]}
             results_db.insert_one(result)
 
-            return render_template ("result.html", message=response["emotion"], name=response["name"])
+            return render_template(
+                "result.html", message=response["emotion"], name=response["name"]
+            )
     else:
         return jsonify({"message": "No photo provided"})
-    
+
 
 @app.after_request
 def add_header(response):
-    response.headers['Cache-Control'] = 'no-store'
+    response.headers["Cache-Control"] = "no-store"
     return response
 
 
 @app.route("/result")
 def result():
     """Retrieve the processed document and render the result.html template"""
-    # Fetch all the results from the 'results_store' collection
-    # Fetch the latest document based on an identifier or timestamp
-    results = list(results_db.find().sort('_id', -1).limit(1))  # Fetching the most recent result
-
+    results = list(results_db.find({}, {"_id": 0, "name": 1, "emotion": 1}))
     if not results:
         return jsonify({"message": "No processed document found"}), 404
-    return render_template('result.html', results=results)  # pass the results to the templateresults to the template
+    return render_template("result.html", results=results)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
