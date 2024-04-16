@@ -23,6 +23,7 @@ def test_upload_file_no_photo(client):
     assert response.status_code == 200
     assert b"No photo provided" in response.data
 
+
 def test_upload_file_no_name(client):
     """Test the /upload endpoint with no name"""
     data = {"photo": (io.BytesIO(b"this is a test"), 'test.jpg')}
