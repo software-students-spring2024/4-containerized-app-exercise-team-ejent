@@ -1,34 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        table {
+        #emotionChart {
             width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+            height: 400px;
         }
     </style>
 </head>
 <body>
-    <h1>Emotion Results</h1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Emotion Message</th>
-        </tr>
+    <div class="container mt-4">
+        <h1 class="mb-4">Emotion Results</h1>
+        
+        <!-- Dynamic Results Display -->
         {% for result in results %}
-        <tr>
-            <td>{{ result.name }}</td>
-            <td>{{ result.emotion }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <button onclick="location.href='/'" type="button">Do another</button>
+        {% if result.emotion is string and result.emotion.startswith('ERROR') %}
+            <!-- Error Message Display -->
+            
+        {% elif result.emotion is mapping %}
+            <!-- Emotion Scores Table -->
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Emotion</th>
+                        <th>Score (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emotion, score in result.emotion.items() %}
+                        <tr>
+                            <td>{{ emotion }}</td>
+                            <td>{{ score | round(2) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <!-- Handle other unexpected cases -->
+            <div class="alert alert-warning" role="alert">
+                Unexpected result format.
+            </div>
+        {% endif %}
+    {% endfor %}
+    
+        
+        <!-- Action Button -->
+        <button onclick="location.href='/'" type="button" class="btn btn-primary">Do Another</button>
+    </div>
 </body>
 </html>
