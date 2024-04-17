@@ -7,19 +7,21 @@ Pymongo: connect to MongoDB
 Deepface: to detect emotions in images
 Numpy: numerical operations
 """
+
 import base64
-from PIL import Image
 import io
-from deepface import DeepFace
 import time
+from PIL import Image
+from deepface import DeepFace
 import pymongo
 import numpy as np
 
 
+# pylint: disable=broad-exception-caught
 def get_emotion(image):
     """
     Method for detecting emotions in an image containing humans,
-    using the deepface library. Works with images containing multiple faces, returns sentiment for majority.
+    using the deepface library. Works with multiple face, returns sentiment for majority.
     """
     try:
         bin_data = base64.b64decode(image)
@@ -37,6 +39,7 @@ def run_connection(option):
     connect_db(option)
 
 
+# pylint: disable=inconsistent-return-statements
 def connect_db(option):
     """
     Method for connecting to the MongoDB client.

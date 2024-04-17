@@ -1,3 +1,5 @@
+"""Main module for the web application"""
+
 import base64
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
@@ -17,6 +19,8 @@ def index():
     """Render the index.html template"""
     return render_template("index.html")
 
+
+# pylint: disable=redefined-outer-name
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
@@ -47,12 +51,12 @@ def upload_file():
             return render_template(
                 "result.html", message=response["emotion"], name=response["name"]
             )
-    else:
-        return jsonify({"message": "No photo provided"})
+    return jsonify({"message": "No photo provided"})
 
 
 @app.after_request
 def add_header(response):
+    "add header"
     response.headers["Cache-Control"] = "no-store"
     return response
 
