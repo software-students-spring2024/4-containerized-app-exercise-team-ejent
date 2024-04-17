@@ -20,7 +20,7 @@ opencv-python = "*"
 pandas = "*"
 #wheel = "*"
 #setuptools = "*"
-#h5py = "*"
+h5py = "*"
 # tensorflow = "*"
 # keras = "*"
 
