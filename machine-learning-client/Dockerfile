@@ -13,6 +13,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN pipenv install
 
-EXPOSE 46377
+EXPOSE 46377 
 
 CMD ["pipenv", "run", "python", "client.py"]
