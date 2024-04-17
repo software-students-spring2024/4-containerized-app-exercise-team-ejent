@@ -4,7 +4,7 @@ import pytest
 from main import app
 
 
-@pytest.fixture(name="client")
+@pytest.fixture(name="mock_client")
 def client():
     """Create a test client for the flask application"""
     app.config["TESTING"] = True
