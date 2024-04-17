@@ -44,7 +44,7 @@ def connect_db(option):
     """
     Method for connecting to the MongoDB client.
     """
-    client = pymongo.MongoClient("mongodb://localhost:27017/")
+    client = pymongo.MongoClient("mongodb://mongodb:27017/")
     db = client["emotion_detection"]
     temp = db["temp_store"]
 
