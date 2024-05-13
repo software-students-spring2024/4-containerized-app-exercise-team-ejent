@@ -20,7 +20,7 @@ def index():
     return render_template("index.html")
 
 
-# pylint: disable=redefined-outer-name
+# pylint: disable=redefined-outer-name 
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """Upload image file and send it to the ML model for processing"""
